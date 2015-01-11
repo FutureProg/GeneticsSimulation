@@ -1,0 +1,39 @@
+public class Phenotype{
+  
+  private int size, colour;
+  protected static final int SIZE_BIG = 0, SIZE_SMALL = 1;
+  protected static final int COL_RED = 0, COL_BLUE = 1;
+  
+  public Phenotype(char size, char colour){
+    switch(size){
+      case 'B':
+        this.size = SIZE_BIG;
+        break;
+      case 'b':
+        this.size = SIZE_SMALL;
+        break;
+      default:
+        System.err.println("Error");
+    }
+    
+    switch(colour){
+      case 'R':
+        this.colour = COL_RED;
+        break;
+      case 'r':
+        this.colour = COL_BLUE;
+        break;
+      default:
+        System.err.println("Error");
+    }
+          
+  }
+  
+  public int getSize(){
+    return size;
+  }
+  public int getColour(){
+    return colour;
+  }
+  
+}

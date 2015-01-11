@@ -1,0 +1,14 @@
+public class Genotype{
+  
+  private char[] geno;
+  private enum size {BIG, SMALL};
+  
+  public Genotype(char[] types){
+    geno = types;
+  }
+  
+  public char[] getGenotypes(){
+    return geno;
+  }
+  
+}

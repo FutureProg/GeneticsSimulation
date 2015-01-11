@@ -1,0 +1,120 @@
+/**
+ * Auto Generated Java Class.
+ */
+import java.util.List;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
+import javax.swing.*;
+import javax.imageio.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.io.*;
+
+public class PunettSquare extends JPanel{
+  BufferedImage img;
+  private final int IHEIGHT, IWIDTH, IGRIDSIZE;
+  private int gen, txtH, txtW, phenoH, phenoW;
+  Font mainFont;
+  FontMetrics metrics;
+  Creature[] creatures;
+  String[] newPheno;
+  
+  public PunettSquare(int newG, Creature c, Creature cc) { 
+    gen =  newG;
+    mainFont = new Font("Arial", Font.BOLD, 15);
+    creatures = new Creature[2];
+    creatures[0] = c;
+    creatures[1] = cc;
+    
+    try{
+      img = ImageIO.read(new File("Graphics/4X4.png"));
+    }catch(IOException e){
+      System.exit(0);
+    }
+    IHEIGHT = img.getHeight();
+    IWIDTH = img.getWidth();
+    IGRIDSIZE = IHEIGHT / 4;
+    newPheno = getNewPheno(creatures[0].getGamete(),creatures[1].getGamete());
+  }
+  
+  public String[] getNewPheno(String[] g, String[] gg){
+    String[] re = new String[16];
+    int count = 0;
+    for(int i = 0; i < 4; i++){
+      for(int r = 0; r < 4; r++){
+        re[count] = ""+ g[i] + ""+gg[r];
+        count++;
+      }
+    }
+    /*String[] temp = re;
+    for(int i = 0; i < 16; i++){
+      char[] chars = temp[i].toCharArray();
+      Arrays.sort(chars);
+      temp[i] = new String(chars);
+    }
+    ArrayList<String> tempList = new ArrayList<String>();
+    for(String str: temp){
+      tempList.add(str);
+    }
+    Collections.sort(tempList, String.CASE_INSENSITIVE_ORDER);
+    count = 0;
+    for(String str: tempList){
+      temp[count] = str;
+      count++;
+    }
+    re = temp;*/
+    return re;
+  }
+  
+  public char[] sortPhenos(char[] p){
+    char[] re = new char[4];
+    String r = p[2] + "" + p[3];
+    String b = p[0] + p[1] + "";
+    
+    if(r.equals("rR"))
+      r = "Rr";
+    if(b.equals("bB"))
+      b = "Bb";
+    
+    
+    return re;
+  }
+  
+  
+  public void paintComponent(Graphics g){
+    if(metrics == null){
+      metrics = g.getFontMetrics(mainFont);
+      txtH = metrics.getHeight();
+    }
+    super.paintComponent(g);
+    Graphics2D g2d = (Graphics2D)g; 
+    g2d.drawImage(img,null,getWidth()-IWIDTH,getHeight()-IHEIGHT);
+    g2d.setFont(mainFont);
+    g2d.setColor(Color.RED);
+    g2d.drawString("F" + gen , 1,txtH);
+    g2d.drawString(new String(creatures[0].getGeno().getGenotypes()), 1, txtH*2);
+    txtW = metrics.stringWidth(new String(creatures[0].getGeno().getGenotypes()));
+    g2d.drawString(" X " + new String(creatures[1].getGeno().getGenotypes()), txtW + 10, txtH*2);
+    
+    g2d.setFont( new Font("Arial",Font.PLAIN, 12));
+    phenoH = (metrics = g.getFontMetrics(new Font("Arial",Font.PLAIN,12))).getHeight();
+    phenoW = (metrics = g.getFontMetrics(new Font("Arial",Font.PLAIN,12))).stringWidth("RR");
+    g2d.setColor(Color.BLACK);
+    int count = 0;
+    for(int c = 0; c < 4; c++){
+      for(int r = 0; r < 4; r++){
+        g2d.drawString(newPheno[count], (getWidth()-IWIDTH)+(2 + IGRIDSIZE * (r)),(getHeight()-IHEIGHT)+(phenoH+ IGRIDSIZE * (c)));
+        count++;
+      }
+    }
+    g2d.setColor(Color.RED);
+    for(int i = 0; i< 4; i++){
+      g2d.drawString(creatures[0].getGamete()[i]+"",(getWidth()-IWIDTH)-phenoW,(getHeight()-IHEIGHT)+(IGRIDSIZE*i)+phenoH);
+    }
+    for(int i = 0; i< 4; i++){
+      g2d.drawString(creatures[1].getGamete()[i]+"",(getWidth()-IWIDTH)+(IGRIDSIZE*i),(getHeight()-IHEIGHT));
+    }
+  }
+  
+}
